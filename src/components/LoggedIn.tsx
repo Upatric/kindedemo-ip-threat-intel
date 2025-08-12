@@ -110,23 +110,35 @@ export default function LoggedIn() {
                     <p><strong>Profile picture:</strong> Available</p>
                   )}
                   
-                  {tokenInfo && (
-                    <>
-                      <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
-                      <h3 style={{ color: 'white', marginBottom: '15px' }}>Token information:</h3>
-                      {Object.entries(tokenInfo).map(([key, value]) => (
-                        <p key={key}>
-                          <strong>{key}:</strong> {
-                            key === 'iat' || key === 'exp' 
-                              ? new Date(Number(value) * 1000).toLocaleString()
-                              : typeof value === 'object' 
-                                ? JSON.stringify(value)
-                                : String(value)
-                          }
-                        </p>
-                      ))}
-                    </>
-                  )}
+                                           {tokenInfo && (
+                           <>
+                             <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
+                             <h3 style={{ color: 'white', marginBottom: '15px' }}>Token information:</h3>
+                             {Object.entries(tokenInfo).map(([key, value]) => (
+                               <p key={key}>
+                                 <strong>{key}:</strong> {
+                                   key === 'iat' || key === 'exp'
+                                     ? new Date(Number(value) * 1000).toLocaleString()
+                                     : typeof value === 'object'
+                                       ? JSON.stringify(value)
+                                       : String(value)
+                                 }
+                               </p>
+                             ))}
+                             
+                             {/* Environment Variables Section */}
+                             {tokenInfo.abuseipdb_threshold && (
+                               <>
+                                 <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
+                                 <h3 style={{ color: 'white', marginBottom: '15px' }}>AbuseIPDB Configuration:</h3>
+                                 <p><strong>Block threshold:</strong> {tokenInfo.abuseipdb_threshold}%</p>
+                                 <p><strong>Cache expiry:</strong> {tokenInfo.abuseipdb_cache_expiry} seconds</p>
+                                 <p><strong>Cache URL:</strong> {tokenInfo.abuseipdb_cache_url}</p>
+                                 <p><strong>Fail open:</strong> {tokenInfo.abuseipdb_fail_open ? 'Enabled' : 'Disabled'}</p>
+                               </>
+                             )}
+                           </>
+                         )}
                 </div>
               </div>
             </div>

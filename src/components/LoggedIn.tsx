@@ -3,7 +3,7 @@ import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { LogoutLink, PortalLink } from "@kinde-oss/kinde-auth-react/components";
 
 export default function LoggedIn() {
-  const { user, getToken } = useKindeAuth();
+  const { user, getToken, getAccessToken, getIdToken } = useKindeAuth();
   
   // Function to decode JWT token
   const decodeToken = (token: string) => {
@@ -23,6 +23,31 @@ export default function LoggedIn() {
   // Get all token information
   const getTokenInfo = async () => {
     try {
+      // Try different token types to find the one with custom claims
+      const accessToken = await getAccessToken();
+      const idToken = await getIdToken();
+      
+      console.log('Access Token:', accessToken);
+      console.log('ID Token:', idToken);
+      
+      // Try to decode both tokens to see which one has the custom claims
+      if (accessToken) {
+        const decodedAccess = decodeToken(accessToken);
+        console.log('Decoded Access Token:', decodedAccess);
+        if (decodedAccess && decodedAccess.abuseipdb_threshold) {
+          return decodedAccess;
+        }
+      }
+      
+      if (idToken) {
+        const decodedId = decodeToken(idToken);
+        console.log('Decoded ID Token:', decodedId);
+        if (decodedId && decodedId.abuseipdb_threshold) {
+          return decodedId;
+        }
+      }
+      
+      // Fallback to the original getToken method
       const token = await getToken();
       if (token) {
         const decoded = decodeToken(token);

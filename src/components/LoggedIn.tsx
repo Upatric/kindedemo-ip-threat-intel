@@ -133,8 +133,8 @@ export default function LoggedIn() {
                                  <h3 style={{ color: 'white', marginBottom: '15px' }}>AbuseIPDB Configuration:</h3>
                                  <p><strong>Block threshold:</strong> {tokenInfo.abuseipdb_threshold}%</p>
                                  <p><strong>Cache expiry:</strong> {tokenInfo.abuseipdb_cache_expiry} seconds</p>
-                                 <p><strong>Cache URL:</strong> {tokenInfo.abuseipdb_cache_url}</p>
                                  <p><strong>Fail open:</strong> {tokenInfo.abuseipdb_fail_open ? 'Enabled' : 'Disabled'}</p>
+                                 <p><strong>Config timestamp:</strong> {tokenInfo.abuseipdb_config_timestamp ? new Date(tokenInfo.abuseipdb_config_timestamp).toLocaleString() : 'N/A'}</p>
                                </>
                              )}
                            </>

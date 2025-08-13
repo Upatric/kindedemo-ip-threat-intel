@@ -1,10 +1,9 @@
 import React from "react";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { LogoutLink, PortalLink } from "@kinde-oss/kinde-auth-react/components";
-import { getKindeEnvironmentVariables } from "../utils/kindeApi";
 
 export default function LoggedIn() {
-  const { user, getToken, getAccessToken, getIdToken } = useKindeAuth();
+  const { user, getToken } = useKindeAuth();
   
   // Function to decode JWT token
   const decodeToken = (token: string) => {
@@ -24,31 +23,6 @@ export default function LoggedIn() {
   // Get all token information
   const getTokenInfo = async () => {
     try {
-      // Try different token types to find the one with custom claims
-      const accessToken = await getAccessToken();
-      const idToken = await getIdToken();
-      
-      console.log('Access Token:', accessToken);
-      console.log('ID Token:', idToken);
-      
-      // Try to decode both tokens to see which one has the custom claims
-      if (accessToken) {
-        const decodedAccess = decodeToken(accessToken);
-        console.log('Decoded Access Token:', decodedAccess);
-        if (decodedAccess && decodedAccess.abuseipdb_threshold) {
-          return decodedAccess;
-        }
-      }
-      
-      if (idToken) {
-        const decodedId = decodeToken(idToken);
-        console.log('Decoded ID Token:', decodedId);
-        if (decodedId && decodedId.abuseipdb_threshold) {
-          return decodedId;
-        }
-      }
-      
-      // Fallback to the original getToken method
       const token = await getToken();
       if (token) {
         const decoded = decodeToken(token);
@@ -60,28 +34,12 @@ export default function LoggedIn() {
     return null;
   };
 
-  // State for token information and environment variables
+  // State for token information
   const [tokenInfo, setTokenInfo] = React.useState<Record<string, any> | null>(null);
-  const [envVars, setEnvVars] = React.useState<Array<{key: string, value: string}> | null>(null);
-  const [envVarsLoading, setEnvVarsLoading] = React.useState(true);
 
   // Get token information on component mount
   React.useEffect(() => {
     getTokenInfo().then(setTokenInfo);
-  }, []);
-
-  // Get environment variables from Kinde Management API
-  React.useEffect(() => {
-    const fetchEnvVars = async () => {
-      setEnvVarsLoading(true);
-      const result = await getKindeEnvironmentVariables();
-      if (result.success) {
-        setEnvVars(result.config);
-      }
-      setEnvVarsLoading(false);
-    };
-
-    fetchEnvVars();
   }, []);
 
   return (
@@ -168,31 +126,7 @@ export default function LoggedIn() {
                                </p>
                              ))}
                              
-                             {/* Environment Variables Section */}
-                             <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
-                             <h3 style={{ color: 'white', marginBottom: '15px' }}>AbuseIPDB Configuration:</h3>
-                             {envVarsLoading ? (
-                               <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
-                                 Loading environment variables from Kinde Management API...
-                               </p>
-                             ) : envVars && envVars.length > 0 ? (
-                               <>
-                                 {envVars.map((variable) => (
-                                   <p key={variable.key}>
-                                     <strong>{variable.key}:</strong> {variable.value}
-                                   </p>
-                                 ))}
-                                 <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
-                                   ✅ Environment variables loaded from Kinde Management API
-                                 </p>
-                               </>
-                             ) : (
-                               <>
-                                 <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
-                                   No AbuseIPDB environment variables found or failed to load.
-                                 </p>
-                               </>
-                             )}
+
                            </>
                          )}
                 </div>

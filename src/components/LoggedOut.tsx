@@ -68,7 +68,7 @@ export default function LoggedOut() {
                 <div className="feature-icon">🔧</div>
                 <h3>Custom workflows</h3>
                 <p>Extensible authentication with Kinde workflows</p>
-                <a 
+            <a
                   href="https://docs.kinde.com/workflows/about-workflows/"
                   target="_blank"
                   rel="noreferrer"
@@ -100,12 +100,12 @@ export default function LoggedOut() {
                 
                 <a
                   href="https://docs.kinde.com/workflows/about-workflows/"
-                  target="_blank"
-                  rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
                   className="btn btn-outline btn-large"
-                >
+            >
                   About workflows
-                </a>
+            </a>
             </div>
           </div>
         </div>

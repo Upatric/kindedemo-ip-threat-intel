@@ -15,7 +15,7 @@ export async function getKindeEnvironmentVariables() {
         grant_type: 'client_credentials',
         client_id: import.meta.env.VITE_KINDE_M2M_CLIENT_ID,
         client_secret: import.meta.env.VITE_KINDE_M2M_CLIENT_SECRET,
-        scope: 'environment:read'
+        scope: 'read:environment_variables'
       })
     });
 

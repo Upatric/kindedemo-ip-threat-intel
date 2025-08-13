@@ -1,6 +1,10 @@
 // Kinde Management API utility for fetching environment variables
 export async function getKindeEnvironmentVariables() {
   try {
+    // Debug: Check if environment variables are loaded
+    console.log('M2M Client ID:', import.meta.env.VITE_KINDE_M2M_CLIENT_ID ? 'Present' : 'Missing');
+    console.log('M2M Client Secret:', import.meta.env.VITE_KINDE_M2M_CLIENT_SECRET ? 'Present' : 'Missing');
+    
     // Get M2M token
     const tokenResponse = await fetch('https://kindetestprodfan.kinde.com/oauth2/token', {
       method: 'POST',
@@ -15,8 +19,14 @@ export async function getKindeEnvironmentVariables() {
       })
     });
 
+    // Debug: Log the response details
+    console.log('Token Response Status:', tokenResponse.status);
+    console.log('Token Response Headers:', Object.fromEntries(tokenResponse.headers.entries()));
+    
     if (!tokenResponse.ok) {
-      throw new Error('Failed to get M2M token');
+      const errorText = await tokenResponse.text();
+      console.error('Token Response Error:', errorText);
+      throw new Error(`Failed to get M2M token: ${tokenResponse.status} - ${errorText}`);
     }
 
     const tokenData = await tokenResponse.json();

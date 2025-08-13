@@ -3,7 +3,7 @@ import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { LogoutLink, PortalLink } from "@kinde-oss/kinde-auth-react/components";
 
 export default function LoggedIn() {
-  const { user, getToken } = useKindeAuth();
+  const { user, getToken, getIdToken } = useKindeAuth();
   
   // Function to decode JWT token
   const decodeToken = (token: string) => {
@@ -13,7 +13,9 @@ export default function LoggedIn() {
       const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
-      return JSON.parse(jsonPayload);
+      const decoded = JSON.parse(jsonPayload);
+      console.log('Full decoded token:', decoded);
+      return decoded;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
@@ -26,16 +28,43 @@ export default function LoggedIn() {
   const [tokenInfo, setTokenInfo] = React.useState<Record<string, unknown> | null>(null);
   const [isTokenExpanded, setIsTokenExpanded] = React.useState(false);
   const [rawToken, setRawToken] = React.useState<string | null>(null);
+  const [tokenSearchTerm, setTokenSearchTerm] = React.useState<string>('');
+  
+  // Function to manually decode the provided token
+  const decodeProvidedToken = () => {
+    const providedToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYwOjA1OjJlOjEzOmI0OmI1OmI5OmUyOmQzOjc0OmMzOmNhOjZlOjUzOmM0OjhlIiwidHlwIjoiSldUIn0.eyJhYnVzZUlwZGJCbG9ja1RocmVzaG9sZCI6OTAsImF0X2hhc2giOiJzT1VWcTBIZG1TV3EtU2d6UjY4aGp3IiwiYXVkIjpbImJmNDM2MjJlZmM4NzQ5YzBiYjRjMzQyMWJiODQ4NTI5Il0sImF1dGhfdGltZSI6MTc1NTA1ODcwMywiYXpwIjoiYmY0MzYyMmVmYzg3NDljMGJiNGMzNDIxYmI4NDg1MjkiLCJlbWFpbCI6ImFsZXhAa2luZGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV4cCI6MTc1NTA2MjMwMywiZmFtaWx5X25hbWUiOiJOb3JtYW4iLCJnaXZlbl9uYW1lIjoiQWxleCIsImlhdCI6MTc1NTA1ODcwMywiaXNzIjoiaHR0cHM6Ly9raW5kZXRlc3Rwcm9kZmFuLmtpbmRlLmNvbSIsImp0aSI6IjNmOWRkNjhlLTU5NmItNDYxNy05OTFlLWM3Y2FhODk1Y2Y0NyIsIm5hbWUiOiJBbGV4IE5vcm1hbiIsIm5vbmNlIjoiZmI4OTY0YWExNjY3Nzc0MyIsIm9yZ19jb2RlcyI6WyJvcmdfYjJiZTg2MTc2NTMiXSwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BTFYtVWpVWUdkMDBjLWZDb3VjN25UNkkwbS1uNFZPUHRnTWlkRXFFQUliNGtyNTZQUHlFUjVqWWg3a2sxSFRWMUZDRGdiRHRPYWFienFJZ19KTmJ0MUxsRlRuNWJNTC1uQnU3QmM0OVdSajYzeWpEWWVHRUR6R1RRTFJ1eGxHbE9HRk9wenJRRWQzRWVmaUpCRFlCX0xDajgyeHNEWEV5UC05RTJsSDAzQ0lkMGl6Qko2TVRqQjBhekpyeEpjdENUSWpZQkYzZmUteFN2Zk1Ta3BFb3NaSTM4TldwTGRudEJVMFZkS1RKM2ptQlA1SFp5SXpudnVIN0o5MWpKNFAwdDItbUVPanJ3cGhsREQyVjZVWnRFTVM5cjZtTFJaTjgwTWkwd21hWnlpcXI2bnl6SWtCNGo3MUd3aXRoY2lKTmxiUGpTM3dhOHJIeHdodzBYQ3IzNVFZdmhNeENHZmY5Y1JTcDdOUnVVREVuLWRmQ3JtbkRaa0lPckpRX2VOejJvdExYWEdvVzBLZGJGNGJZVzIzRkdESGNyVFc4SzNJWktKWDNoSzZKYW9lWmo1MlNUeXpnUjNXMDlGVko3U0I5NlVKOWEzLVVRRGZqQlJxdDhPcDRfVlowWlJXVmVYcVJkZGc5Q2JjVXVxRTFBaHllVXNicktSazNrRDJJN3ExTTR4ODlBbWExcE1HVHZNSDN5VmY1RFpUOWhfVDc0QU1HdFhaaFVvUVJuX00yU195MTAyS2VSZk1lU1p0dEEwSi1zNHhHWGZuZnRMZkRaUGNUY0RRYzdwUmZfTmVuZGhmdGdEdUNWWWxpcXlvQTZOZUV1WUMyWHZYNnhWeHlfRjdISFZJX0lvQUg2TkZNbnJ1TzI3TVo0WkFBdzM4ZmhZX2d1WEd3cFBvMVljRnFWYlBBeVVWTTVMWTlRczJSWFV3V1hrZTNFYmd5RnI0NnBDd2xlUnRqVDNFZVBhMTFhYkVTWkc2eXFEb0dQZDh0R2RmQ2d4R2dNQjE4N3Q3bVVZRUdQLUk3R2xGWVFXOGp4eEwwVGRWa21CaFlGUHJRWld5ZHdWYi1nYk92UHFHUXBrRlljRzY3elB0MHphQTNSUi1pc3B4VkgtN3FOa2p3dFVZeGdMNE50UmVOZkdYTXVXMllhNllPcmxxc1FOM0lPRlRHMjJ5TjkwNGFvaGZEVDJXVVFuSWFUU0l2ek42Ny1DbHRoMWY2X1BpNFRSQVU4WFZJRkI0Q3pWZ2x4VHZtV3RHazdKc0ZHVnI3QXY3SE1Rb1FoZmJPUlVTRXZqdkE1aHB5T0RHRVVXaTQzTnFMMWxXa0ZlQXo9czk2LWMiLCJyYXQiOjE3NTUwNTg3MDMsInN1YiI6ImtwXzFjNDFkMDA2ZjljOTQ2OTc5YTAyNzc5ODU2YzkyYzhmIiwidXBkYXRlZF9hdCI6MS43NTUwNTg3MDNlKzA5fQ.NqV6XoDyvJoQg0ubTdPiVEuqBGZyC-tYd8hor4VO439Hw-be7hAKyp6tOnsXTjmVrlUGdJWeDSacGyzcnbDw9Ith75pro40xxCG34YbydImsuc13-ruzJs0Mge5HjKylHandNP6m48U3CHjv73CiaxhL7WNyR1HRoMGUKcLBgB8MESH0ixjzQmjDrcADAVU5IzGW8jvewctHL7yC9kZYFSn6TchI2Yo_9Iy9nKX889I1C7Fu64EYiJNuwgDbk6jpckSA24WmmyVVSkrr5myDDnEIBeEL2lcwc5JPQwvh8H_QLrZFh2p4pN9bgmqpJRUxPsYHtHxKN7x6apDLozL6Qg";
+    console.log('Manually decoding provided token...');
+    setRawToken(providedToken);
+    const decoded = decodeToken(providedToken);
+    console.log('Manual decode result:', decoded);
+    setTokenInfo(decoded);
+  };
 
   // Get token information on component mount
   React.useEffect(() => {
     const fetchTokenData = async () => {
       try {
-        const token = await getToken();
+        console.log('Attempting to get ID token...');
+        
+        // Try to get ID token first
+        let token = null;
+        try {
+          token = await getIdToken();
+          console.log('Got ID token via getIdToken()');
+        } catch {
+          console.log('getIdToken() failed, trying getToken()...');
+          token = await getToken();
+          console.log('Got token via getToken()');
+        }
+        
         if (token) {
+          console.log('Raw token received:', token.substring(0, 50) + '...');
           setRawToken(token);
           const decoded = decodeToken(token);
+          console.log('Decoded token keys:', Object.keys(decoded || {}));
           setTokenInfo(decoded);
+        } else {
+          console.log('No token received');
         }
       } catch (error) {
         console.error('Error getting token:', error);
@@ -136,10 +165,25 @@ export default function LoggedIn() {
                                  <span>{isTokenExpanded ? '▼' : '▶'}</span>
                                  {isTokenExpanded ? 'Hide' : 'Show'} Full ID Token
                                </button>
+                               <button
+                                 onClick={decodeProvidedToken}
+                                 style={{
+                                   background: 'rgba(255, 179, 102, 0.2)',
+                                   border: '1px solid #ffb366',
+                                   color: '#ffb366',
+                                   padding: '8px 12px',
+                                   borderRadius: '6px',
+                                   cursor: 'pointer',
+                                   fontSize: '12px',
+                                   marginLeft: '10px'
+                                 }}
+                               >
+                                 Test Provided Token
+                               </button>
                                
                                {isTokenExpanded && (
                                  <div className="token-content" style={{ marginBottom: '20px' }}>
-                                   <div className="token-tabs" style={{ display: 'flex', marginBottom: '10px' }}>
+                                   <div className="token-tabs" style={{ display: 'flex', marginBottom: '10px', gap: '10px', alignItems: 'center' }}>
                                      <button
                                        className="token-tab active"
                                        style={{
@@ -154,6 +198,22 @@ export default function LoggedIn() {
                                      >
                                        Decoded Token
                                      </button>
+                                     <input
+                                       type="text"
+                                       placeholder="Search token fields (e.g., abuseIpdbBlockThreshold)"
+                                       value={tokenSearchTerm}
+                                       onChange={(e) => setTokenSearchTerm(e.target.value)}
+                                       style={{
+                                         background: 'rgba(255,255,255,0.1)',
+                                         border: '1px solid rgba(255,255,255,0.3)',
+                                         color: 'white',
+                                         padding: '6px 12px',
+                                         borderRadius: '4px',
+                                         fontSize: '12px',
+                                         flex: 1,
+                                         maxWidth: '300px'
+                                       }}
+                                     />
                                    </div>
                                    
                                    <div className="token-display" style={{
@@ -164,6 +224,16 @@ export default function LoggedIn() {
                                      maxHeight: '400px',
                                      overflow: 'auto'
                                    }}>
+                                     <div style={{ marginBottom: '10px', color: '#a8e6cf', fontSize: '12px' }}>
+                                       <strong>Total fields in token: {Object.keys(tokenInfo || {}).length}</strong>
+                                       {tokenSearchTerm && (
+                                         <span style={{ marginLeft: '10px', color: '#ffb366' }}>
+                                           (Filtered: {Object.keys(tokenInfo || {}).filter(key => 
+                                             key.toLowerCase().includes(tokenSearchTerm.toLowerCase())
+                                           ).length} matches)
+                                         </span>
+                                       )}
+                                     </div>
                                      <pre style={{
                                        color: 'white',
                                        fontSize: '12px',
@@ -172,7 +242,18 @@ export default function LoggedIn() {
                                        whiteSpace: 'pre-wrap',
                                        wordBreak: 'break-word'
                                      }}>
-                                       {JSON.stringify(tokenInfo, null, 2)}
+                                       {tokenSearchTerm 
+                                         ? JSON.stringify(
+                                             Object.fromEntries(
+                                               Object.entries(tokenInfo || {}).filter(([key]) => 
+                                                 key.toLowerCase().includes(tokenSearchTerm.toLowerCase())
+                                               )
+                                             ), 
+                                             null, 
+                                             2
+                                           )
+                                         : JSON.stringify(tokenInfo, null, 2)
+                                       }
                                      </pre>
                                    </div>
                                    
@@ -203,8 +284,17 @@ export default function LoggedIn() {
                                <div className="token-summary">
                                  <h3 style={{ color: 'white', marginBottom: '15px', fontSize: '16px' }}>Token Summary:</h3>
                                  {Object.entries(tokenInfo).map(([key, value]) => (
-                                   <p key={key} style={{ margin: '5px 0', fontSize: '14px' }}>
-                                     <strong style={{ color: '#a8e6cf' }}>{key}:</strong> {
+                                   <p key={key} style={{ 
+                                     margin: '5px 0', 
+                                     fontSize: '14px',
+                                     backgroundColor: key === 'abuseIpdbBlockThreshold' ? 'rgba(255, 179, 102, 0.2)' : 'transparent',
+                                     padding: key === 'abuseIpdbBlockThreshold' ? '8px' : '0',
+                                     borderRadius: key === 'abuseIpdbBlockThreshold' ? '4px' : '0',
+                                     border: key === 'abuseIpdbBlockThreshold' ? '1px solid #ffb366' : 'none'
+                                   }}>
+                                     <strong style={{ 
+                                       color: key === 'abuseIpdbBlockThreshold' ? '#ffb366' : '#a8e6cf' 
+                                     }}>{key}:</strong> {
                                        key === 'iat' || key === 'exp'
                                          ? new Date(Number(value) * 1000).toLocaleString()
                                          : typeof value === 'object'

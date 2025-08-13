@@ -20,26 +20,28 @@ export default function LoggedIn() {
     }
   };
 
-  // Get all token information
-  const getTokenInfo = async () => {
-    try {
-      const token = await getToken();
-      if (token) {
-        const decoded = decodeToken(token);
-        return decoded;
-      }
-    } catch (error) {
-      console.error('Error getting token:', error);
-    }
-    return null;
-  };
+
 
   // State for token information
-  const [tokenInfo, setTokenInfo] = React.useState<Record<string, any> | null>(null);
+  const [tokenInfo, setTokenInfo] = React.useState<Record<string, unknown> | null>(null);
+  const [isTokenExpanded, setIsTokenExpanded] = React.useState(false);
+  const [rawToken, setRawToken] = React.useState<string | null>(null);
 
   // Get token information on component mount
   React.useEffect(() => {
-    getTokenInfo().then(setTokenInfo);
+    const fetchTokenData = async () => {
+      try {
+        const token = await getToken();
+        if (token) {
+          setRawToken(token);
+          const decoded = decodeToken(token);
+          setTokenInfo(decoded);
+        }
+      } catch (error) {
+        console.error('Error getting token:', error);
+      }
+    };
+    fetchTokenData();
   }, []);
 
   return (
@@ -110,23 +112,109 @@ export default function LoggedIn() {
                     <p><strong>Profile picture:</strong> Available</p>
                   )}
                   
-                                           {tokenInfo && (
+                         {tokenInfo && (
                            <>
                              <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
-                             <h3 style={{ color: 'white', marginBottom: '15px' }}>Token information:</h3>
-                             {Object.entries(tokenInfo).map(([key, value]) => (
-                               <p key={key}>
-                                 <strong>{key}:</strong> {
-                                   key === 'iat' || key === 'exp'
-                                     ? new Date(Number(value) * 1000).toLocaleString()
-                                     : typeof value === 'object'
-                                       ? JSON.stringify(value)
-                                       : String(value)
-                                 }
-                               </p>
-                             ))}
-                             
-
+                             <div className="token-section">
+                               <button
+                                 className="token-toggle-btn"
+                                 onClick={() => setIsTokenExpanded(!isTokenExpanded)}
+                                 style={{
+                                   background: 'none',
+                                   border: '1px solid rgba(255,255,255,0.3)',
+                                   color: 'white',
+                                   padding: '10px 15px',
+                                   borderRadius: '8px',
+                                   cursor: 'pointer',
+                                   fontSize: '14px',
+                                   display: 'flex',
+                                   alignItems: 'center',
+                                   gap: '8px',
+                                   marginBottom: '15px'
+                                 }}
+                               >
+                                 <span>{isTokenExpanded ? '▼' : '▶'}</span>
+                                 {isTokenExpanded ? 'Hide' : 'Show'} Full ID Token
+                               </button>
+                               
+                               {isTokenExpanded && (
+                                 <div className="token-content" style={{ marginBottom: '20px' }}>
+                                   <div className="token-tabs" style={{ display: 'flex', marginBottom: '10px' }}>
+                                     <button
+                                       className="token-tab active"
+                                       style={{
+                                         background: 'rgba(255,255,255,0.1)',
+                                         border: 'none',
+                                         color: 'white',
+                                         padding: '8px 16px',
+                                         borderRadius: '6px 6px 0 0',
+                                         cursor: 'pointer',
+                                         fontSize: '13px'
+                                       }}
+                                     >
+                                       Decoded Token
+                                     </button>
+                                   </div>
+                                   
+                                   <div className="token-display" style={{
+                                     background: 'rgba(0,0,0,0.3)',
+                                     border: '1px solid rgba(255,255,255,0.2)',
+                                     borderRadius: '0 6px 6px 6px',
+                                     padding: '15px',
+                                     maxHeight: '400px',
+                                     overflow: 'auto'
+                                   }}>
+                                     <pre style={{
+                                       color: 'white',
+                                       fontSize: '12px',
+                                       lineHeight: '1.4',
+                                       margin: 0,
+                                       whiteSpace: 'pre-wrap',
+                                       wordBreak: 'break-word'
+                                     }}>
+                                       {JSON.stringify(tokenInfo, null, 2)}
+                                     </pre>
+                                   </div>
+                                   
+                                   {rawToken && (
+                                     <div style={{ marginTop: '15px' }}>
+                                       <h4 style={{ color: 'white', fontSize: '14px', marginBottom: '8px' }}>Raw Token:</h4>
+                                       <div style={{
+                                         background: 'rgba(0,0,0,0.3)',
+                                         border: '1px solid rgba(255,255,255,0.2)',
+                                         borderRadius: '6px',
+                                         padding: '10px',
+                                         maxHeight: '100px',
+                                         overflow: 'auto'
+                                       }}>
+                                         <code style={{
+                                           color: '#a8e6cf',
+                                           fontSize: '11px',
+                                           wordBreak: 'break-all'
+                                         }}>
+                                           {rawToken}
+                                         </code>
+                                       </div>
+                                     </div>
+                                   )}
+                                 </div>
+                               )}
+                               
+                               <div className="token-summary">
+                                 <h3 style={{ color: 'white', marginBottom: '15px', fontSize: '16px' }}>Token Summary:</h3>
+                                 {Object.entries(tokenInfo).map(([key, value]) => (
+                                   <p key={key} style={{ margin: '5px 0', fontSize: '14px' }}>
+                                     <strong style={{ color: '#a8e6cf' }}>{key}:</strong> {
+                                       key === 'iat' || key === 'exp'
+                                         ? new Date(Number(value) * 1000).toLocaleString()
+                                         : typeof value === 'object'
+                                           ? JSON.stringify(value)
+                                           : String(value)
+                                     }
+                                   </p>
+                                 ))}
+                               </div>
+                             </div>
                            </>
                          )}
                 </div>

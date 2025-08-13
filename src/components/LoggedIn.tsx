@@ -1,6 +1,7 @@
 import React from "react";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { LogoutLink, PortalLink } from "@kinde-oss/kinde-auth-react/components";
+import { getKindeEnvironmentVariables } from "../utils/kindeApi";
 
 export default function LoggedIn() {
   const { user, getToken, getAccessToken, getIdToken } = useKindeAuth();
@@ -59,12 +60,28 @@ export default function LoggedIn() {
     return null;
   };
 
-  // State for token information
+  // State for token information and environment variables
   const [tokenInfo, setTokenInfo] = React.useState<Record<string, any> | null>(null);
+  const [envVars, setEnvVars] = React.useState<Array<{key: string, value: string}> | null>(null);
+  const [envVarsLoading, setEnvVarsLoading] = React.useState(true);
 
   // Get token information on component mount
   React.useEffect(() => {
     getTokenInfo().then(setTokenInfo);
+  }, []);
+
+  // Get environment variables from Kinde Management API
+  React.useEffect(() => {
+    const fetchEnvVars = async () => {
+      setEnvVarsLoading(true);
+      const result = await getKindeEnvironmentVariables();
+      if (result.success) {
+        setEnvVars(result.config);
+      }
+      setEnvVarsLoading(false);
+    };
+
+    fetchEnvVars();
   }, []);
 
   return (
@@ -152,14 +169,28 @@ export default function LoggedIn() {
                              ))}
                              
                              {/* Environment Variables Section */}
-                             {tokenInfo.abuseipdb_threshold && (
+                             <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
+                             <h3 style={{ color: 'white', marginBottom: '15px' }}>AbuseIPDB Configuration:</h3>
+                             {envVarsLoading ? (
+                               <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
+                                 Loading environment variables from Kinde Management API...
+                               </p>
+                             ) : envVars && envVars.length > 0 ? (
                                <>
-                                 <hr style={{ margin: '20px 0', border: '1px solid rgba(255,255,255,0.1)' }} />
-                                 <h3 style={{ color: 'white', marginBottom: '15px' }}>AbuseIPDB Configuration:</h3>
-                                 <p><strong>Block threshold:</strong> {tokenInfo.abuseipdb_threshold}%</p>
-                                 <p><strong>Cache expiry:</strong> {tokenInfo.abuseipdb_cache_expiry} seconds</p>
-                                 <p><strong>Fail open:</strong> {tokenInfo.abuseipdb_fail_open ? 'Enabled' : 'Disabled'}</p>
-                                 <p><strong>Config timestamp:</strong> {tokenInfo.abuseipdb_config_timestamp ? new Date(tokenInfo.abuseipdb_config_timestamp).toLocaleString() : 'N/A'}</p>
+                                 {envVars.map((variable) => (
+                                   <p key={variable.key}>
+                                     <strong>{variable.key}:</strong> {variable.value}
+                                   </p>
+                                 ))}
+                                 <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
+                                   ✅ Environment variables loaded from Kinde Management API
+                                 </p>
+                               </>
+                             ) : (
+                               <>
+                                 <p style={{ fontSize: '0.9em', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
+                                   No AbuseIPDB environment variables found or failed to load.
+                                 </p>
                                </>
                              )}
                            </>

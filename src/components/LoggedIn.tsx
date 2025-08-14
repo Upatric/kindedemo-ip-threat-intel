@@ -281,32 +281,62 @@ export default function LoggedIn() {
 
 
             <div className="cta-section">
-              <a
-                href="https://dev.to/kinde/creating-a-kinde-workflow-to-check-for-malicious-ips-3pmk"
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-primary btn-large"
-              >
-                Read the article
-              </a>
-              
-              <a
-                href="https://github.com/kinde-starter-kits/workflow-examples/blob/main/postUserAuthentication/checkIPWithAbuseIPDBWorkflow.ts"
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-outline btn-large"
-              >
-                Workflow code
-              </a>
-              
-              <a
-                href="https://docs.kinde.com/workflows/about-workflows/"
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-outline btn-large"
-              >
-                About workflows
-              </a>
+              <h2 className="section-title">References</h2>
+              <div className="cta-buttons">
+                              <a
+                  href="https://dev.to/kinde/creating-a-kinde-workflow-to-check-for-malicious-ips-3pmk"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+                >
+                  Read article
+                </a>
+                
+                <a
+                  href="https://github.com/kinde-starter-kits/workflow-examples/blob/main/postUserAuthentication/checkIPWithAbuseIPDBWorkflow.ts"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+                >
+                  Workflow examples
+                </a>
+                
+                <a
+                  href="https://docs.kinde.com/workflows/about-workflows/"
+              target="_blank"
+              rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  About workflows
+            </a>
+            
+            <a
+                  href="https://github.com/kinde-oss/kindedemo-ip-threat-intel"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  Code for this site
+            </a>
+            
+            <a
+                  href="https://docs.kinde.com/developer-tools/sdks/frontend/react-sdk/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  React SDK
+            </a>
+            
+            <a
+                  href="https://github.com/kinde-starter-kits/react-starter-kit"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  React starter kit
+            </a>
+              </div>
             </div>
           </div>
         </div>
@@ -318,7 +348,6 @@ export default function LoggedIn() {
           <div className="footer-section footer-resources">
             <div className="footer-links-row">
               <a href="https://kinde.com/docs" className="footer-link">Documentation</a>
-              <a href="https://kinde.com/docs/developer-tools/react-sdk" className="footer-link">React SDK</a>
               <a href="https://kinde.com/support/" className="footer-link">Support and community</a>
             </div>
           </div>

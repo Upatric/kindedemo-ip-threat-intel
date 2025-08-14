@@ -100,14 +100,12 @@ export default function LoggedIn() {
                 <li>
                   <button 
                     onClick={() => logout()}
-                    className="text-subtle"
                     style={{
                       background: 'none',
                       border: 'none',
                       color: 'rgba(255, 255, 255, 0.7)',
                       cursor: 'pointer',
                       textDecoration: 'underline',
-                      fontSize: 'inherit',
                       fontFamily: 'inherit'
                     }}
                   >

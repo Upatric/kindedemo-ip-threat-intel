@@ -262,6 +262,7 @@ a {
 .c-user-menu a {
   text-decoration: underline;
   color: rgba(255, 255, 255, 0.7);
+  font-size: var(--g-font-size-small);
 }
 
 .c-user-menu button:hover,

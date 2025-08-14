@@ -95,7 +95,7 @@ export default function LoggedOut() {
                   rel="noreferrer"
                   className="btn btn-outline btn-large"
                 >
-                  View source code
+                  Workflow code
                 </a>
                 
                 <a

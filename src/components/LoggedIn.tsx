@@ -118,8 +118,16 @@ export default function LoggedIn() {
                 <div className="info-content">
                   <p><strong>Name:</strong> {user?.givenName} {user?.familyName}</p>
                   <p><strong>Email:</strong> {user?.email}</p>
-                  {user?.picture && (
-                    <p><strong>Profile picture:</strong> Available</p>
+                  {tokenInfo && (
+                    <>
+                      <p><strong>Email verified:</strong> {tokenInfo.email_verified ? 'Yes' : 'No'}</p>
+                      <p><strong>Abuse IPDB block threshold:</strong> {String(tokenInfo.abuseIpdbBlockThreshold || 'Not set')}</p>
+                      <p><strong>Abuse IPDB current score:</strong> {tokenInfo.abuseIpdbCurrentScore !== undefined && tokenInfo.abuseIpdbCurrentScore !== null ? String(tokenInfo.abuseIpdbCurrentScore) : 'Not set'}</p>
+                      <p><strong>Auth time:</strong> {tokenInfo.auth_time ? new Date(Number(tokenInfo.auth_time) * 1000).toLocaleString() : 'Not set'}</p>
+                      <p><strong>Token expiration:</strong> {tokenInfo.exp ? new Date(Number(tokenInfo.exp) * 1000).toLocaleString() : 'Not set'}</p>
+                      <p><strong>Org code:</strong> {Array.isArray(tokenInfo.org_codes) ? tokenInfo.org_codes.join(', ') : 'Not set'}</p>
+                      <p><strong>User ID:</strong> {String(tokenInfo.sub || 'Not set')}</p>
+                    </>
                   )}
                   
                          {tokenInfo && (
@@ -248,25 +256,7 @@ export default function LoggedIn() {
                                  </div>
                                )}
                                
-                               <div className="token-summary">
-                                 <h3 style={{ color: 'white', marginBottom: '15px', fontSize: '16px' }}>Token Summary:</h3>
-                                 {Object.entries(tokenInfo).map(([key, value]) => (
-                                                                    <p key={key} style={{ 
-                                   margin: '5px 0', 
-                                   fontSize: '14px'
-                                 }}>
-                                   <strong style={{ 
-                                     color: '#a8e6cf' 
-                                   }}>{key}:</strong> {
-                                       key === 'iat' || key === 'exp'
-                                         ? new Date(Number(value) * 1000).toLocaleString()
-                                         : typeof value === 'object'
-                                           ? JSON.stringify(value)
-                                           : String(value)
-                                     }
-                                   </p>
-                                 ))}
-                               </div>
+                               
                              </div>
                            </>
                          )}
@@ -292,7 +282,7 @@ export default function LoggedIn() {
                 rel="noreferrer"
                 className="btn btn-outline btn-large"
               >
-                View source code
+                Workflow code
               </a>
               
               <a

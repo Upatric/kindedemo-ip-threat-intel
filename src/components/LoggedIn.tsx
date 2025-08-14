@@ -1,9 +1,9 @@
 import React from "react";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
-import { LogoutLink, PortalLink } from "@kinde-oss/kinde-auth-react/components";
+import { PortalLink } from "@kinde-oss/kinde-auth-react/components";
 
 export default function LoggedIn() {
-  const { user, getToken, getIdToken } = useKindeAuth();
+  const { user, getToken, getIdToken, logout } = useKindeAuth();
   
   // Function to decode JWT token
   const decodeToken = (token: string) => {
@@ -98,7 +98,21 @@ export default function LoggedIn() {
                   <PortalLink>Account</PortalLink>
                 </li>
                 <li>
-                  <LogoutLink className="text-subtle">Sign out</LogoutLink>
+                  <button 
+                    onClick={() => logout()}
+                    className="text-subtle"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      fontSize: 'inherit',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    Sign out
+                  </button>
                 </li>
               </ul>
             </div>

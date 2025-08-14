@@ -1,5 +1,4 @@
 import {
-  RegisterLink,
   LoginLink,
 } from "@kinde-oss/kinde-auth-react/components";
 
@@ -28,7 +27,6 @@ export default function LoggedOut() {
           </div>
           <div className="header-actions">
             <LoginLink className="btn btn-secondary">Sign in</LoginLink>
-            <RegisterLink className="btn btn-primary">Get started</RegisterLink>
           </div>
         </div>
       </header>
@@ -37,14 +35,11 @@ export default function LoggedOut() {
       <main className="modern-main">
         <div className="hero-section">
           <div className="hero-content">
-            <div className="badge">
-              <span className="badge-icon">🔒</span>
-              <span>Secure authentication demo</span>
-            </div>
+
             
             <h1 className="hero-title">
               Advanced authentication with
-              <span className="gradient-text"> threat intelligence</span>
+              <span className="gradient-text"> IP threat intelligence</span>
             </h1>
             
             <p className="hero-description">
@@ -68,25 +63,19 @@ export default function LoggedOut() {
                 <div className="feature-icon">🔧</div>
                 <h3>Custom workflows</h3>
                 <p>Extensible authentication with Kinde workflows</p>
-            <a
-                  href="https://docs.kinde.com/workflows/about-workflows/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="feature-link"
-                >
-                  Learn about workflows →
-                </a>
               </div>
             </div>
 
             <div className="cta-section">
+              <h2 className="section-title">References</h2>
+              <div className="cta-buttons">
                               <a
                   href="https://dev.to/kinde/creating-a-kinde-workflow-to-check-for-malicious-ips-3pmk"
                   target="_blank"
                   rel="noreferrer"
                   className="btn btn-outline btn-large"
                 >
-                  Read the article
+                  Read article
                 </a>
                 
                 <a
@@ -95,7 +84,7 @@ export default function LoggedOut() {
                   rel="noreferrer"
                   className="btn btn-outline btn-large"
                 >
-                  Workflow code
+                  Workflow examples
                 </a>
                 
                 <a
@@ -106,6 +95,34 @@ export default function LoggedOut() {
             >
                   About workflows
             </a>
+            
+            <a
+                  href="https://github.com/kinde-oss/kindedemo-ip-threat-intel"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  Code for this site
+            </a>
+            
+            <a
+                  href="https://docs.kinde.com/developer-tools/sdks/frontend/react-sdk/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  React SDK
+            </a>
+            
+            <a
+                  href="https://github.com/kinde-starter-kits/react-starter-kit"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  React starter kit
+            </a>
+              </div>
             </div>
           </div>
         </div>
@@ -117,7 +134,6 @@ export default function LoggedOut() {
           <div className="footer-section footer-resources">
             <div className="footer-links-row">
               <a href="https://kinde.com/docs" className="footer-link">Documentation</a>
-              <a href="https://kinde.com/docs/developer-tools/react-sdk" className="footer-link">React SDK</a>
               <a href="https://kinde.com/support/" className="footer-link">Support and community</a>
             </div>
           </div>

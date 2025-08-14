@@ -5,12 +5,14 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.app.json && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@kinde-oss/kinde-auth-react": "^5.5.0",
+    "@kinde/infrastructure": "^0.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

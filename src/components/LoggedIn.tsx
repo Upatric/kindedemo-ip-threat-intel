@@ -282,7 +282,8 @@ export default function LoggedIn() {
 
             <div className="cta-section">
               <h2 className="section-title">References</h2>
-              <div className="cta-buttons">
+              
+                            <div className="cta-buttons">
                               <a
                   href="https://dev.to/kinde/creating-a-kinde-workflow-to-check-for-malicious-ips-3pmk"
                   target="_blank"
@@ -336,6 +337,92 @@ export default function LoggedIn() {
             >
                   React starter kit
             </a>
+            
+            <a
+                  href="https://abuseipdb.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  AbuseIPDB
+            </a>
+            
+            <a
+                  href="https://upstash.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-outline btn-large"
+            >
+                  Upstash
+            </a>
+              </div>
+            </div>
+            
+            <div className="flow-section">
+              <h2 className="section-title">Flow diagram</h2>
+              <div className="flow-diagram-container">
+                <pre className="flow-diagram">
+{`┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                    IP THREAT INTELLIGENCE AUTHENTICATION FLOW                               │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   USER      │    │   REACT     │    │   KINDE     │    │   WORKFLOWS │    │   EXTERNAL  │
+│  BROWSER    │    │   FRONTEND  │    │   AUTH      │    │             │    │  SERVICES   │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │                   │                   │
+       │ 1. Visit Site     │                   │                   │                   │
+       │──────────────────▶│                   │                   │                   │
+       │                   │                   │                   │                   │
+       │ 2. Click Sign In  │                   │                   │                   │
+       │◀──────────────────│                   │                   │                   │
+       │                   │ 3. Redirect to    │                   │                   │
+       │                   │    Kinde Auth     │                   │                   │
+       │                   │──────────────────▶│                   │                   │
+       │                   │                   │                   │                   │
+       │ 4. User Login     │                   │                   │                   │
+       │──────────────────────────────────────▶│                   │                   │
+       │                   │                   │                   │                   │
+       │                   │                   │ 5. Post Auth      │                   │
+       │                   │                   │   Workflow        │                   │
+       │                   │                   │──────────────────▶│                   │
+       │                   │                   │                   │                   │
+       │                   │                   │                   │ 6. Check Cache    │
+       │                   │                   │                   │   (Upstash Redis) │
+       │                   │                   │                   │◀─────────────────▶│
+       │                   │                   │                   │                   │
+       │                   │                   │                   │ 7. If not         │
+       │                   │                   │                   │   cached, call    │
+       │                   │                   │                   │   AbuseIPDB       │
+       │                   │                   │                   │◀─────────────────▶│
+       │                   │                   │                   │                   │
+       │                   │                   │                   │ 8. Store score    │
+       │                   │                   │                   │   in cache        │
+       │                   │                   │                   │──────────────────▶│
+       │                   │                   │                   │                   │
+       │                   │                   │ 9. Store score    │                   │
+       │                   │                   │   in user props   │                   │
+       │                   │                   │◀──────────────────│                   │
+       │                   │                   │                   │                   │
+       │                   │                   │ 10. Token Gen     │                   │
+       │                   │                   │   Workflow        │                   │
+       │                   │                   │◀──────────────────│                   │
+       │                   │                   │                   │                   │
+       │                   │                   │ 11. Add abuse     │                   │
+       │                   │                   │    score to ID    │                   │
+       │                   │                   │    token claims   │                   │
+       │                   │                   │◀──────────────────│                   │
+       │                   │                   │                   │                   │
+       │                   │ 12. Redirect back │                   │                   │
+       │                   │    with token     │                   │                   │
+       │                   │◀──────────────────│                   │                   │
+       │                   │                   │                   │                   │
+       │ 13. Display       │                   │                   │                   │
+       │    user info &    │                   │                   │                   │
+       │    token data     │                   │                   │                   │
+       │◀──────────────────│                   │                   │                   │
+       │                   │                   │                   │                   │`}
+                </pre>
               </div>
             </div>
           </div>

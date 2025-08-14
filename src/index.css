@@ -10,7 +10,7 @@
   --g-box-shadow: 0px 6px 12px rgba(18, 20, 23, 0.06),
     0px 15px 24px rgba(18, 20, 23, 0.07), 0px -4px 12px rgba(18, 20, 23, 0.05);
 
-  --g-font-family: Helvetica, sans-serif;
+  --g-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
   --g-font-size-x-small: 0.75rem; /* 12px */
   --g-font-size-small: 0.875rem; /* 14px */
@@ -23,8 +23,8 @@
 
   --g-font-weight-base: 400;
   --g-font-weight-semi-bold: 500;
-  --g-font-weight-bold: 600;
-  --g-font-weight-black: 700;
+  --g-font-weight-bold: 400;
+  --g-font-weight-black: 400;
 
   --g-border-radius-small: 0.5rem;
   --g-border-radius-base: 1rem;
@@ -124,12 +124,12 @@ a {
 
 .text-heading-1 {
   font-size: var(--g-font-size-large);
-  font-weight: var(--g-font-weight-semi-bold);
+  font-weight: var(--g-font-weight-base);
 }
 
 .text-heading-2 {
   font-size: var(--g-font-size-base);
-  font-weight: var(--g-font-weight-semi-bold);
+  font-weight: var(--g-font-weight-base);
   color: white;
 }
 
@@ -154,7 +154,7 @@ a {
 .btn {
   border-radius: var(--g-border-radius-small);
   display: inline-block;
-  font-weight: var(--g-font-weight-bold);
+  font-weight: var(--g-font-weight-base);
   padding: var(--g-spacing-base);
 }
 
@@ -170,7 +170,7 @@ a {
 .btn-light {
   background: var(--g-color-white);
   color: var(--g-color-black);
-  font-weight: 600;
+  font-weight: var(--g-font-weight-base);
 }
 
 .btn-big {
@@ -410,7 +410,7 @@ a {
 .btn {
   padding: var(--g-spacing-base) var(--g-spacing-large);
   border-radius: 12px;
-  font-weight: var(--g-font-weight-bold);
+  font-weight: var(--g-font-weight-base);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -490,7 +490,7 @@ a {
   padding: var(--g-spacing-small) var(--g-spacing-large);
   margin-bottom: var(--g-spacing-2x-large);
   font-size: var(--g-font-size-small);
-  font-weight: var(--g-font-weight-semi-bold);
+  font-weight: var(--g-font-weight-base);
 }
 
 .badge-icon {
@@ -499,7 +499,7 @@ a {
 
 .hero-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: var(--g-font-weight-black);
+  font-weight: var(--g-font-weight-base);
   line-height: 1.2;
   margin-bottom: var(--g-spacing-2x-large);
   color: white;
@@ -507,7 +507,7 @@ a {
 
 .gradient-text {
   color: white;
-  font-weight: var(--g-font-weight-black);
+  font-weight: var(--g-font-weight-base);
 }
 
 .hero-description {
@@ -552,7 +552,7 @@ a {
 
 .feature-card h3 {
   font-size: var(--g-font-size-large);
-  font-weight: var(--g-font-weight-bold);
+  font-weight: var(--g-font-weight-base);
   margin-bottom: var(--g-spacing-base);
   color: white;
 }
@@ -566,7 +566,7 @@ a {
 .feature-link {
   color: white;
   text-decoration: none;
-  font-weight: var(--g-font-weight-semi-bold);
+  font-weight: var(--g-font-weight-base);
   font-size: var(--g-font-size-small);
   transition: all 0.3s ease;
   display: inline-flex;
@@ -586,7 +586,7 @@ a {
 
 .section-title {
   font-size: var(--g-font-size-2x-large);
-  font-weight: var(--g-font-weight-bold);
+  font-weight: var(--g-font-weight-base);
   color: white;
   text-align: center;
   margin-bottom: var(--g-spacing-2x-large);
@@ -623,7 +623,7 @@ a {
 
 .info-card h3 {
   font-size: var(--g-font-size-large);
-  font-weight: var(--g-font-weight-bold);
+  font-weight: var(--g-font-weight-base);
   margin-bottom: var(--g-spacing-large);
   color: white;
 }
@@ -637,7 +637,7 @@ a {
 
 .info-content strong {
   color: white;
-  font-weight: var(--g-font-weight-semi-bold);
+  font-weight: var(--g-font-weight-base);
 }
 
 /* CTA Section */
@@ -652,7 +652,7 @@ a {
 
 .cta-buttons {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--g-spacing-large);
   justify-content: center;
   width: 100%;
@@ -669,6 +669,41 @@ a {
   font-size: 0.9rem;
   line-height: 1.2;
   padding: var(--g-spacing-base) var(--g-spacing-base);
+}
+
+.flow-section {
+  margin-top: var(--g-spacing-6x-large);
+  text-align: center;
+}
+
+.flow-diagram-title {
+  color: white;
+  font-size: var(--g-font-size-large);
+  font-weight: var(--g-font-weight-bold);
+  margin-bottom: var(--g-spacing-large);
+  text-align: center;
+}
+
+.flow-diagram-container {
+  margin-bottom: var(--g-spacing-3x-large);
+  overflow-x: auto;
+  width: 100%;
+  max-width: none;
+}
+
+.flow-diagram {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: var(--g-spacing-large);
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #a8e6cf;
+  white-space: pre;
+  overflow-x: auto;
+  min-width: 800px;
+  margin: 0;
 }
 
 /* Footer */

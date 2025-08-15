@@ -516,7 +516,7 @@ a {
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: var(--g-spacing-3x-large);
-  max-width: 600px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }

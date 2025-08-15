@@ -46,6 +46,14 @@ export default function LoggedOut() {
               Experience next-generation authentication powered by Kinde workflows. 
               This demo showcases malicious IP detection using AbuseIPDB integration 
               and optimized performance with Upstash Redis caching.
+
+              <br />
+              <br />
+
+              Click the Sign in button at the top and authenticate with your Google social account. 
+              The post auth page will show your abuse score from the threat intelligence provider AbuseIPDB.
+
+              Also see below for documentation, code samples, and a flow chart of the auth session.
             </p>
 
             <div className="feature-grid">

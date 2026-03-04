@@ -4,3 +4,7 @@ package-lock.json @kinde-starter-kits/sdk-engineers
 **/package-lock.json @kinde-starter-kits/sdk-engineers
 package.json @kinde-starter-kits/sdk-engineers
 **/package.json @kinde-starter-kits/sdk-engineers
+pnpm-lock.yaml @kinde-oss/sdk-engineers
+**/pnpm-lock.yaml @kinde-oss/sdk-engineers
+pnpm-workspace.yaml @kinde-oss/sdk-engineers
+**/pnpm-workspace.yaml @kinde-oss/sdk-engineers
